@@ -13,9 +13,31 @@ async function loadComponent(id, file) {
 await loadComponent("header", "./header.html");
 await loadComponent("footer", "./footer.html");
 
-// Make mobile menu functional after header loads
-document.addEventListener("click", e => {
-  if (e.target.closest(".menu-toggle")) {
-    document.querySelector(".main-nav").classList.toggle("active");
-  }
+// Once header is loaded, activate menu and highlight current link
+document.addEventListener("DOMContentLoaded", () => {
+  // Mobile menu toggle
+  document.addEventListener("click", e => {
+    if (e.target.closest(".menu-toggle")) {
+      document.querySelector(".main-nav").classList.toggle("active");
+    }
+  });
+
+  // Highlight active nav link based on current URL
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  navLinks.forEach(link => {
+    const linkPage = link.getAttribute("href").split("/").pop();
+    if (linkPage === currentPage) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+
+    // Also visually update on click (for single-page navigation feel)
+    link.addEventListener("click", () => {
+      navLinks.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
 });
