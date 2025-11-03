@@ -1,4 +1,4 @@
-import { fetchTrendingMovies } from "../api/tmdb";
+import { fetchTrendingMovies } from "../api/tmdb.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hero = document.getElementById("hero");
