@@ -1,4 +1,5 @@
 import { fetchTrendingMovies } from "../api/tmdb.js";
+import { initHomeAnimations } from "../animations/homeAnimations.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hero = document.getElementById("hero");
@@ -11,20 +12,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderHero(current);
   renderReel(movies);
 
-  // --- Mood filtering (mock example) ---
+  // Initialize GSAP animations after elements are rendered
+  initHomeAnimations();
+
+  // --- Mood filtering ---
   moodBar.addEventListener("click", e => {
     const btn = e.target.closest(".mood-btn");
     if (!btn) return;
+
     document.querySelectorAll(".mood-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
     const mood = btn.dataset.mood;
     let filtered = movies;
+
     if (mood === "action") filtered = movies.filter(m => m.genre_ids.includes(28));
     else if (mood === "romance") filtered = movies.filter(m => m.genre_ids.includes(10749));
-    else if (mood === "thriller") filtered = movies.filter(m => m.genre_ids.includes(53) || m.genre_ids.includes(9648));
+    else if (mood === "thriller")
+      filtered = movies.filter(m => m.genre_ids.includes(53) || m.genre_ids.includes(9648));
+
     renderReel(filtered);
+    initHomeAnimations(); // re-init animations for new content
   });
+
+  // ====== RENDER FUNCTIONS ======
 
   function renderHero(movie) {
     hero.innerHTML = `
@@ -41,6 +52,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
         </div>
       </div>`;
+
+    // Run animation for new hero content
+    initHomeAnimations();
   }
 
   function renderReel(list) {
