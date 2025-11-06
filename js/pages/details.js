@@ -4,8 +4,8 @@ import {
   fetchMovieCredits,
   fetchSimilarMovies
 } from "../api/tmdb.js";
-import { initDetailsAnimations } from "../animations/detailsAnimations.js";
-import { isFavourite, addFavourite, removeFavourite } from "../utils/favourites.js";
+import { initDetailsAnimations } from "../animations/detailsAnimation.js";
+import { isFavourite, addFavourite, removeFavourite } from "./favourites.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
