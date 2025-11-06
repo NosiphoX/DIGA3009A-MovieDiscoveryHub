@@ -32,6 +32,51 @@
   color: #f5f5f5;
 }
 
+/* ===== LOGO STYLING ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+/* Logo image */
+.logo img {
+  width: 48px;              /* Adjust size of the image */
+  height: auto;             /* Maintain aspect ratio */
+  border-radius: 8px;       /* Soften corners */
+  box-shadow: 0 0 10px rgba(255, 79, 138, 0.4);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+/* On hover, add a cinematic glow */
+.logo:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 79, 138, 0.8);
+}
+
+.logo:hover span {
+  color: #ff4f8a;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .logo img {
+    width: 40px;
+  }
+
+  .logo span {
+    font-size: 1rem;
+  }
+}
+
+
 /* NAVIGATION LINKS */
 .main-nav ul {
   list-style: none;
