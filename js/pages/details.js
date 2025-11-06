@@ -1,5 +1,5 @@
 import { fetchMovieDetails, fetchMovieCredits, fetchSimilarMovies } from "../api/tmdb.js";
-import { initDetailsAnimations } from "../animations/detailsAnimations.js";
+import { initDetailsAnimations } from "../animations/detailsAnimation.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
