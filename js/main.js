@@ -40,4 +40,23 @@ document.addEventListener("DOMContentLoaded", () => {
       link.classList.add("active");
     });
   });
+// --- Logo Intro Animation ---
+gsap.from(".logo img", {
+  duration: 1,
+  opacity: 0,
+  y: -20,
+  ease: "power2.out"
+});
+
+gsap.from(".logo span", {
+  duration: 1,
+  opacity: 0,
+  y: -10,
+  delay: 0.3,
+  ease: "power2.out",
+  onComplete: () => {
+    gsap.to(".logo span", { color: "#ff4f8a", duration: 0.5, yoyo: true, repeat: 1 });
+  }
+});
+
 });
