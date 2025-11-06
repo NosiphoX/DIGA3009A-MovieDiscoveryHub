@@ -1,0 +1,82 @@
+/* css/base.css - global theme (black + pink + glassy) */
+
+:root{
+  --bg-1: #0a0a0a;
+  --bg-2: #0f0f0f;
+  --accent: #ff4f8a;
+  --muted: #bdbdbd;
+  --glass: rgba(255,255,255,0.04);
+  --glass-strong: rgba(255,255,255,0.06);
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html,body {
+  height: 100%;
+  margin: 0;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, var(--bg-1), #000);
+  color: #fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Global container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Glass card */
+.card {
+  background: var(--glass);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+}
+
+/* Buttons */
+.btn {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+.btn.primary { background: linear-gradient(90deg,var(--accent), #d24f8f); border: none; }
+
+/* Links */
+a { color: inherit; text-decoration: none; }
+
+/* Small utilities */
+.text-muted { color: var(--muted); font-size: .95rem; }
+.center { text-align: center; }
+
+/* Loader */
+.details-loader {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 1rem 0;
+}
+.details-loader .spinner {
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border: 4px solid rgba(255,255,255,0.08);
+  border-top-color: var(--accent);
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Error */
+.details-error {
+  padding: 3rem 1rem;
+  color: #ddd;
+  text-align: center;
+}
