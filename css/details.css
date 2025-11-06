@@ -87,7 +87,3 @@
   transform: scale(1.05);
 }
 
-/* ensure hero uses base theme */
-.movie-hero { background: linear-gradient(180deg, rgba(10,10,10,0.9), rgba(0,0,0,0.9)); }
-.movie-info { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.04); }
-.empty-cast, .empty-related { color: var(--muted); padding: 1rem; }
