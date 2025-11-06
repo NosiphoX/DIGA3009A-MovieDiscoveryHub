@@ -1,23 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movie Discovery Hub</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="./css/header-footer.css">
-  
-
-  <!-- JS (with defer) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details | Movie Discovery Hub</title>
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="./css/details.css">
   <script type="module" src="./js/main.js" defer></script>
+  <script type="module" src="./js/pages/details.js" defer></script>
 </head>
 
 <body>
   <div id="header"></div>
 
-  <main>
-    <h1>Welcome to Movie Discovery Hub 🎬</h1>
+  <main id="details-page">
+    <section class="movie-hero">
+      <div class="hero-bg"></div>
+      <div class="movie-info">
+        <img class="poster" alt="Movie Poster" />
+        <div class="info-text">
+          <h1 class="title"></h1>
+          <p class="meta"></p>
+          <p class="rating"></p>
+          <p class="overview"></p>
+          <div class="details-ctas">
+            <button class="btn save">Save</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cast-section">
+      <h2>Cast</h2>
+      <div class="cast-list"></div>
+    </section>
+
+    <section class="related-section">
+      <h2>You Might Also Like</h2>
+      <div class="related-list"></div>
+    </section>
   </main>
 
   <div id="footer"></div>

@@ -1,0 +1,88 @@
+.movie-hero {
+  position: relative;
+  color: #fff;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.4) blur(10px);
+  z-index: 1;
+}
+
+.movie-info {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 2rem;
+  max-width: 1000px;
+  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.poster {
+  width: 250px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255,79,138,0.5);
+}
+
+.info-text {
+  max-width: 600px;
+}
+
+.info-text h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-text .meta {
+  color: #bbb;
+  margin-bottom: 1rem;
+}
+
+.info-text .overview {
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.cast-section, .related-section {
+  padding: 3rem 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cast-list, .related-list {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.cast-item, .related-item {
+  flex: 0 0 auto;
+  text-align: center;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.cast-item img, .related-item img {
+  width: 120px;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.cast-item:hover, .related-item:hover {
+  transform: scale(1.05);
+}
