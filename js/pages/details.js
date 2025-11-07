@@ -1,68 +1,102 @@
 // js/pages/details.js
-import { fetchMovieDetails, fetchMovieCredits, fetchSimilarMovies, FALLBACK_IMG } from "../api/tmdb.js";
+import {
+  fetchMovieDetails,
+  fetchMovieCredits,
+  fetchSimilarMovies,
+} from "../api/tmdb.js";
+
 import { initDetailsAnimations } from "../animations/detailsAnimation.js";
 
-// Grab movie ID from URL query params
-const urlParams = new URLSearchParams(window.location.search);
-const movieId = urlParams.get("id") || "550"; // default to Fight Club for testing
+document.addEventListener("DOMContentLoaded", async () => {
+  // ===== 1️⃣ Extract movie ID from URL =====
+  const params = new URLSearchParams(window.location.search);
+  const movieId = params.get("id") || 603692; // fallback: John Wick: Chapter 4 ID (for testing)
 
-// DOM Elements
-const moviePoster = document.getElementById("moviePoster");
-const movieTitle = document.getElementById("movieTitle");
-const movieTagline = document.getElementById("movieTagline");
-const movieOverview = document.getElementById("movieOverview");
-const releaseDateEl = document.getElementById("releaseDate");
-const movieRating = document.getElementById("movieRating");
-const movieGenres = document.getElementById("movieGenres");
-const castList = document.querySelector(".cast-list");
-const relatedGrid = document.querySelector(".related-grid");
+  // ===== 2️⃣ Load details + cast + related movies =====
+  const [details, credits, similar] = await Promise.all([
+    fetchMovieDetails(movieId),
+    fetchMovieCredits(movieId),
+    fetchSimilarMovies(movieId),
+  ]);
 
-// Initialize page
-async function initDetailsPage() {
-  try {
-    // 1️⃣ Fetch movie details
-    const details = await fetchMovieDetails(movieId);
-    moviePoster.src = details.poster_path || FALLBACK_IMG;
-    movieTitle.textContent = details.title || "Movie Title";
-    movieTagline.textContent = details.tagline || "A cinematic journey beyond imagination.";
-    movieOverview.textContent = details.overview || "No overview available.";
-    releaseDateEl.textContent = details.release_date || "Unknown";
-    movieRating.textContent = details.vote_average || "N/A";
-    movieGenres.textContent = details.genres?.map(g => g.name).join(", ") || "Unknown";
+  renderMovieDetails(details);
+  renderCast(credits.cast);
+  renderRelatedMovies(similar);
 
-    // 2️⃣ Fetch cast
-    const credits = await fetchMovieCredits(movieId);
-    castList.innerHTML = ""; // clear placeholders
-    credits.cast.slice(0, 15).forEach(actor => {
-      const card = document.createElement("div");
-      card.classList.add("cast-card");
-      card.innerHTML = `
-        <img src="${actor.profile_path || FALLBACK_IMG}" alt="${actor.name}" />
-        <p class="actor-name">${actor.name}</p>
-        <p class="character-name">as ${actor.character}</p>
-      `;
-      castList.appendChild(card);
-    });
+  // ===== 3️⃣ Start animations =====
+  initDetailsAnimations();
+});
 
-    // 3️⃣ Fetch related movies
-    const related = await fetchSimilarMovies(movieId);
-    relatedGrid.innerHTML = ""; // clear placeholders
-    related.slice(0, 6).forEach((movie, i) => {
-      const card = document.createElement("div");
-      card.classList.add(i === 0 ? "featured" : "card"); // first is featured
-      card.innerHTML = `
-        <img src="${movie.poster_path || FALLBACK_IMG}" alt="${movie.title}" />
-        <div class="card-title">${movie.title}</div>
-      `;
-      relatedGrid.appendChild(card);
-    });
 
-    // 4️⃣ Initialize animations after content is rendered
-    initDetailsAnimations();
+// ======  SECTION RENDERERS  ======
 
-  } catch (err) {
-    console.error("Error initializing details page:", err);
-  }
+function renderMovieDetails(movie) {
+  const container = document.querySelector(".movie-details");
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="details-hero" style="background-image:url('${movie.backdrop_path}')">
+      <div class="overlay"></div>
+      <div class="details-meta">
+        <img src="${movie.poster_path}" alt="${movie.title}" class="poster" />
+        <div class="info">
+          <h1>${movie.title}</h1>
+          <p class="tagline">${movie.tagline || ""}</p>
+          <p class="rating">⭐ ${movie.vote_average.toFixed(1)} / 10</p>
+          <p class="overview">${movie.overview}</p>
+          <p class="extra">Release: ${movie.release_date || "N/A"} | Runtime: ${movie.runtime || "N/A"} min</p>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-document.addEventListener("DOMContentLoaded", initDetailsPage);
+
+function renderCast(cast) {
+  const container = document.querySelector(".cast-section");
+  if (!container) return;
+
+  const castHTML = cast
+    .slice(0, 15)
+    .map(
+      (member) => `
+      <div class="cast-card">
+        <img src="${member.profile_path}" alt="${member.name}">
+        <p class="actor-name">${member.name}</p>
+        <p class="character">${member.character}</p>
+      </div>
+    `
+    )
+    .join("");
+
+  container.innerHTML = `
+    <h2>Cast</h2>
+    <div class="cast-scroll">${castHTML}</div>
+  `;
+}
+
+
+function renderRelatedMovies(movies) {
+  const container = document.querySelector(".related-section");
+  if (!container) return;
+
+  const relatedHTML = movies
+    .slice(0, 9)
+    .map(
+      (movie) => `
+      <div class="related-card">
+        <img src="${movie.poster_path}" alt="${movie.title}">
+        <div class="related-info">
+          <h4>${movie.title}</h4>
+          <p>${movie.release_date ? movie.release_date.split("-")[0] : "N/A"}</p>
+        </div>
+      </div>
+    `
+    )
+    .join("");
+
+  container.innerHTML = `
+    <h2>Related Movies</h2>
+    <div class="related-grid">${relatedHTML}</div>
+  `;
+}
