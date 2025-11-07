@@ -1,0 +1,26 @@
+/* =========================
+   BROWSE FILTERS & SEARCH INPUT
+========================= */
+.browse-controls select,
+.browse-controls input[type="search"] {
+  color: #000; /* 🖤 Black text */
+  background-color: #fff; /* White background */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.browse-controls select:focus,
+.browse-controls input[type="search"]:focus {
+  outline: none;
+  border-color: #ff4f8a; /* matches your cinematic accent */
+  box-shadow: 0 0 0 3px rgba(255, 79, 138, 0.2);
+}
+
+.browse-controls select option {
+  color: #000; /* ensure dropdown list options are readable */
+  background-color: #fff;
+}

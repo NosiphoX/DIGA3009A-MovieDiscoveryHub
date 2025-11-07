@@ -1,0 +1,55 @@
+.favourites-page {
+  background: radial-gradient(circle at top left, #1a0d0d 0%, #000 70%);
+  color: #fff;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.favourites-grid-wrap {
+  margin-top: 2rem;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  align-items: stretch;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ff4f8a;
+  font-size: 1rem;
+  margin-top: 2rem;
+  font-weight: 500;
+  gap: 1rem;
+}
+
+#emptyReel {
+  width: 120px;
+  height: 60px;
+}
+
+
+/* Movie card already styled in browse.css (reused) */
+
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.8rem;
+  }
+}
