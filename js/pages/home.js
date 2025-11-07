@@ -48,47 +48,66 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ====== RENDER FUNCTIONS ======
   function renderHero(movie) {
-    hero.innerHTML = `
-      <div class="hero-poster" style="background-image:url('${movie.backdrop_path || movie.poster_path}')">
-        <div class="hero-overlay">
-          <div class="hero-meta">
-            <h1>${movie.title} <span>(${new Date(movie.release_date).getFullYear()})</span></h1>
-            <p class="rating">⭐ ${movie.vote_average.toFixed(1)}</p>
-            <p class="overview">${movie.overview.slice(0, 200)}...</p>
-            <div class="hero-ctas">
-              <a href="details.html?id=${movie.id}" class="btn">Details</a>
-              <button class="btn save" data-id="${movie.id}">Save</button>
-            </div>
+  // 1️⃣ Inject hero content safely
+  hero.innerHTML = `
+    <div class="hero-poster" style="background-image:url('${movie.backdrop_path || movie.poster_path}')">
+      <div class="hero-overlay">
+        <div class="hero-meta">
+          <h1>${movie.title} <span>(${new Date(movie.release_date).getFullYear()})</span></h1>
+          <p class="rating">⭐ ${movie.vote_average.toFixed(1)}</p>
+          <p class="overview">${movie.overview.slice(0, 200)}...</p>
+          <div class="hero-ctas">
+            <a href="details.html?id=${movie.id}" class="btn">Details</a>
+            <button class="btn save" data-id="${movie.id}">Save</button>
           </div>
         </div>
-      </div>`;
+      </div>
+    </div>`;
 
-    // Save button logic
-    const saveBtn = hero.querySelector(".hero-ctas .save");
+  // 2️⃣ Attach Save button listener AFTER it exists
+  const saveBtn = hero.querySelector(".hero-ctas .save");
 
-    if (isFavourite(movie.id)) {
-      saveBtn.textContent = "Saved";
-      saveBtn.classList.add("saved");
-    } else {
+  if (!saveBtn) return; // Safety check
+
+  // Set initial state
+  if (isFavourite(movie.id)) {
+    saveBtn.textContent = "Saved";
+    saveBtn.classList.add("saved");
+  } else {
+    saveBtn.textContent = "Save";
+    saveBtn.classList.remove("saved");
+  }
+
+  // Attach click listener
+  saveBtn.addEventListener("click", () => {
+    const alreadySaved = isFavourite(movie.id);
+    saveToFavourites(movie, alreadySaved);
+
+    if (alreadySaved) {
       saveBtn.textContent = "Save";
       saveBtn.classList.remove("saved");
+    } else {
+      saveBtn.textContent = "Saved";
+      saveBtn.classList.add("saved");
     }
+  });
 
-    saveBtn.addEventListener("click", () => {
-      const alreadySaved = isFavourite(movie.id);
-      saveToFavourites(movie, alreadySaved);
+  // 3️⃣ Run animations WITHOUT overwriting the mood bar or save button
+  // Only animate the hero content itself
+  gsap.from(hero.querySelector(".hero-poster"), { 
+    scale: 1.2, opacity: 0, duration: 1.5, ease: "power2.out" 
+  });
+  gsap.from(hero.querySelector(".hero-meta h1"), { y: 40, opacity: 0, duration: 0.8, ease: "power2.out" });
+  gsap.from(hero.querySelector(".hero-meta .rating"), { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" });
+  gsap.from(hero.querySelector(".hero-meta .overview"), { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" });
+  gsap.from(hero.querySelector(".hero-ctas"), { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" });
 
-      if (alreadySaved) {
-        saveBtn.textContent = "Save";
-        saveBtn.classList.remove("saved");
-      } else {
-        saveBtn.textContent = "Saved";
-        saveBtn.classList.add("saved");
-      }
-    });
-
-    initHomeAnimations();
+  // 4️⃣ Ensure mood bar stays visible
+  const moodBarEl = document.getElementById("moodBar");
+  if (moodBarEl) {
+    gsap.set(moodBarEl, { y: 0, opacity: 1 });
   }
+}
 
   function renderReel(list) {
     reel.innerHTML = "";

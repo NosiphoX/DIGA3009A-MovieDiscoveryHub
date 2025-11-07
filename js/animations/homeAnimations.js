@@ -14,16 +14,40 @@ export function initHomeAnimations() {
     .from(".hero-ctas", { y: 30, opacity: 0 }, "-=0.4");
 
   // 2️⃣ ScrollTrigger Animations (Mood bar + timeline)
-  gsap.from(".mood-bar", {
-    scrollTrigger: {
-      trigger: ".mood-bar",
-      start: "top 90%",
-      toggleActions: "play none none reverse",
-    },
-    y: -30,
+ // Animate mood bar buttons individually with a floating entrance
+const moodButtons = document.querySelectorAll(".mood-bar .mood-btn");
+
+moodButtons.forEach((btn, i) => {
+  // Entrance animation: slide in from left/right + fade
+  const xStart = i % 2 === 0 ? -50 : 50;
+
+  gsap.from(btn, {
+    x: xStart,
+    y: 20,
     opacity: 0,
     duration: 1,
+    ease: "power3.out",
+    delay: i * 0.15,
+    scrollTrigger: {
+      trigger: ".mood-bar",
+      start: "top 70%",
+      toggleActions: "play none none reverse",
+    }
   });
+
+  // Subtle pink flicker/glow effect
+  gsap.to(btn, {
+    boxShadow: "0 0 12px rgba(255,79,138,0.7)",
+    textShadow: "0 0 8px rgba(255,79,138,0.7)",
+    duration: 1.2 + Math.random(), // slight random timing
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    delay: i * 0.2 // stagger flickers slightly
+  });
+});
+
+
 
   gsap.from(".timeline", {
     scrollTrigger: {
@@ -32,8 +56,8 @@ export function initHomeAnimations() {
       toggleActions: "play none none reverse",
     },
     y: 60,
-    opacity: 0,
-    duration: 1.2,
+    opacity: 100,
+    duration: 5,
   });
 
   // 3️⃣ Cinematic Spotlight Sweep (replaces Film Reel SVG)
