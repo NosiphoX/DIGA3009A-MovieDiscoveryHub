@@ -6,21 +6,22 @@ const FALLBACK_IMG = "./assets/images/placeholder.png";
 
 /**
  * Generic fetch helper for TMDB API
+ * Handles query params safely
  */
-async function fetchFromTMDB(endpoint, params = "") {
+async function fetchFromTMDB(endpoint, extraParams = {}) {
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US${params}`);
+    const params = new URLSearchParams({ api_key: API_KEY, language: 'en-US', ...extraParams });
+    const response = await fetch(`${BASE_URL}${endpoint}?${params}`);
     if (!response.ok) throw new Error(`TMDB fetch failed: ${response.status}`);
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error("❌ TMDB API Error:", error);
-    return { results: [] };
+    return {}; // Return empty object instead of results array to avoid map errors
   }
 }
 
 /**
- * Maps image paths to full URLs (poster_path, backdrop_path, etc.)
+ * Ensure full image URLs or fallback
  */
 function formatMovieImages(movie) {
   return {
@@ -31,15 +32,15 @@ function formatMovieImages(movie) {
 }
 
 /* ============================================================
-    HOMEPAGE / BROWSE FUNCTIONS
-   ============================================================ */
+   HOMEPAGE / BROWSE FUNCTIONS
+============================================================ */
 
 /**
  * Fetch trending movies of the day
  */
 export async function fetchTrendingMovies() {
   const data = await fetchFromTMDB("/trending/movie/day");
-  return data.results.map(formatMovieImages);
+  return data.results?.map(formatMovieImages) || [];
 }
 
 /**
@@ -54,28 +55,27 @@ export async function fetchGenres() {
  * Search movies by keyword
  */
 export async function searchMovies(query, page = 1) {
-  const data = await fetchFromTMDB("/search/movie", `&query=${encodeURIComponent(query)}&page=${page}`);
-  return data.results.map(formatMovieImages);
+  const data = await fetchFromTMDB("/search/movie", { query, page });
+  return data.results?.map(formatMovieImages) || [];
 }
 
 /**
  * Discover movies with filters (genre, year, etc.)
  */
 export async function discoverMovies(filters = {}) {
-  const queryParams = new URLSearchParams({
+  const queryParams = {
     sort_by: filters.sort_by || "popularity.desc",
     with_genres: filters.genre || "",
     primary_release_year: filters.year || "",
     page: filters.page || 1,
-  }).toString();
-
-  const data = await fetchFromTMDB(`/discover/movie`, `&${queryParams}`);
-  return data.results.map(formatMovieImages);
+  };
+  const data = await fetchFromTMDB("/discover/movie", queryParams);
+  return data.results?.map(formatMovieImages) || [];
 }
 
 /* ============================================================
-  DETAILS PAGE FUNCTIONS
-   ============================================================ */
+   DETAILS PAGE FUNCTIONS
+============================================================ */
 
 /**
  * Fetch detailed movie information
@@ -90,11 +90,15 @@ export async function fetchMovieDetails(id) {
  */
 export async function fetchMovieCredits(id) {
   const data = await fetchFromTMDB(`/movie/${id}/credits`);
-  data.cast = data.cast.map(c => ({
+  data.cast = data.cast?.map(c => ({
     ...c,
     profile_path: c.profile_path ? `${IMG_URL}${c.profile_path}` : FALLBACK_IMG,
-  }));
-  return data;
+  })) || [];
+
+  data.crew = data.crew || [];
+  const director = data.crew.find(c => c.job === "Director") || null;
+
+  return { cast: data.cast, crew: data.crew, director };
 }
 
 /**
@@ -102,10 +106,10 @@ export async function fetchMovieCredits(id) {
  */
 export async function fetchSimilarMovies(id) {
   const data = await fetchFromTMDB(`/movie/${id}/similar`);
-  return data.results.map(formatMovieImages);
+  return data.results?.map(formatMovieImages) || [];
 }
 
 /* ============================================================
-    IMAGE UTILITIES (OPTIONAL EXPORTS)
-   ============================================================ */
+   IMAGE UTILITIES
+============================================================ */
 export { IMG_URL, FALLBACK_IMG };

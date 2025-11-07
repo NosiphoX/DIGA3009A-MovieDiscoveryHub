@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Discovery Hub | Details</title>
+
+  <!-- Universal styles -->
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+  <link rel="stylesheet" href="./css/header-footer.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+
+  <!-- Page-specific -->
+  <link rel="stylesheet" href="./css/details.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- GSAP Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+
+  <!-- JS Modules -->
+  <script type="module" src="./js/main.js" defer></script>
+  <script type="module" src="./js/api/tmdb.js" defer></script>
+  <script type="module" src="./js/pages/details.js" defer></script>
+  <script type="module" src="/js/animations/detailsAnimation.js" defer></script>
+</head>
+
+<body>
+  <!-- Header -->
+  <header id="header"></header>
+<main class="details-page">
+
+  <!-- Hero Section -->
+  <section class="movie-hero">
+    <div class="hero-backdrop"></div>
+    <div class="hero-content">
+      <div class="poster-wrapper">
+        <img src="#" alt="Movie Poster" class="movie-poster" id="moviePoster">
+      </div>
+      <div class="hero-info">
+        <h1 id="movieTitle"></h1>
+        <p id="movieTagline"></p>
+        <div class="movie-meta">
+          <span id="releaseDate"></span>
+          <span id="movieRating"></span>
+          <span id="movieGenres"></span>
+        </div>
+        <div class="hero-buttons">
+          <button id="watchTrailerBtn">🎬 Watch Trailer</button>
+          <button id="saveMovieBtn">❤️ Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Synopsis / Info Section -->
+  <section class="movie-info">
+    <div class="info-container">
+      <h2>Synopsis</h2>
+      <p id="movieOverview"></p>
+      <!-- Additional metadata -->
+      <div class="info-meta">
+        <p><strong>Runtime:</strong> <span id="runtime"></span></p>
+        <p><strong>Director:</strong> <span id="director"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!--  Cast Section (Horizontal Scroll) -->
+  <section class="cast-section">
+    <h2>Cast</h2>
+    <div class="cast-list">
+    </div>
+  </section>
+
+  <!-- Related Movies Section -->
+  <section class="related-section">
+    <h2>Related Movies</h2>
+    <div class="related-grid">
+      <!-- Related movies dynamically injected -->
+    </div>
+    <!-- Optional SVG / MotionPath animation in background -->
+  </section>
+
+</main>
+
+  <!-- Footer -->
+  <footer id="footer"></footer>
+</body>
+</html>
