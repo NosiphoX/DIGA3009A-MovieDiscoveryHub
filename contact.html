@@ -1,25 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movie Discovery Hub</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Discovery Hub | Contact</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="./css/header-footer.css">
-  
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+  <link rel="stylesheet" href="./css/header-footer.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/contact.css" />
 
-  <!-- JS (with defer) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+
   <script type="module" src="./js/main.js" defer></script>
+  <script type="module" src="./js/pages/contact.js" defer></script>
+  <script type="module" src="./js/animations/contactAnimations.js" defer></script>
 </head>
-
 <body>
-  <div id="header"></div>
+  <header id="header"></header>
 
-  <main>
-    <h1>Welcome to Movie Discovery Hub 🎬</h1>
+  <main id="main" class="contact-page">
+    <section class="contact-form-wrap" aria-label="Contact form">
+      <h1>Contact Us</h1>
+
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="nameInput">Name</label>
+          <input id="nameInput" type="text" name="name" placeholder="Your full name" required />
+          <span class="error-msg visually-hidden">Please enter your name</span>
+        </div>
+
+        <div class="form-group">
+          <label for="emailInput">Email</label>
+          <input id="emailInput" type="email" name="email" placeholder="Your email address" required />
+          <span class="error-msg visually-hidden">Please enter a valid email</span>
+        </div>
+
+        <div class="form-group">
+          <label for="messageInput">Message</label>
+          <textarea id="messageInput" name="message" rows="5" placeholder="Your message" required></textarea>
+          <span class="error-msg visually-hidden">Message cannot be empty</span>
+        </div>
+
+        <button type="submit" class="btn submit-btn">Send Message</button>
+        <div id="formSuccess" class="form-success visually-hidden">Thank you! Your message has been sent.</div>
+      </form>
+    </section>
   </main>
 
-  <div id="footer"></div>
+  <footer id="footer"></footer>
 </body>
 </html>

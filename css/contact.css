@@ -1,0 +1,119 @@
+.contact-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #1a0d0d 0%, #000 70%);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-x: hidden;
+}
+
+.contact-form-wrap {
+  max-width: 500px;
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(255,79,138,0.2);
+}
+
+.contact-form-wrap h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-error {
+  border-color: #ff4f8a !important;
+}
+
+.error-msg {
+  color: #ff4f8a;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+}
+
+.submit-btn {
+  display: block;
+  margin: 1rem auto 0;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #ff4f8a;
+  border-color: #ff4f8a;
+}
+
+.form-success {
+  text-align: center;
+  color: #ff4f8a;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .contact-form-wrap {
+    padding: 1.5rem;
+  }
+}
+/* Ripple effect */
+.submit-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,79,138,0.4);
+  transform: scale(0);
+  pointer-events: none;
+}
+
+.ripple-animate {
+  animation: rippleAnim 0.6s ease-out;
+}
+
+@keyframes rippleAnim {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Floating particles */
+.particle {
+  will-change: transform, opacity;
+}
+
