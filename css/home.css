@@ -8,12 +8,17 @@
 }
 
 /* Mood Bar */
-.mood-bar {
+..mood-bar {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  padding: 1.5rem 0;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  background: rgba(26,26,26,0.95); /* slightly transparent dark background */
+  z-index: 10;
 }
+
 .mood-btn {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
@@ -142,4 +147,10 @@
   height: 100%;
   opacity: 0.6;
   filter: blur(10px);
+}
+.hero-ctas .save.saved {
+  background: #ff4f8a;
+  color: #fff;
+  border-color: #ff4f8a;
+  cursor: default;
 }
