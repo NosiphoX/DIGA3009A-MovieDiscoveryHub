@@ -1,12 +1,9 @@
-/* css/details.css
-   Cinematic details page styles
-   Matches homepage colors, rounded cards, soft glow accents.
-   Sections are prepared for GSAP scroll-zoom by providing transitions and will-change.
-*/
+/* =====================================
+   DETAILS PAGE — Cinematic Glassy Layout
+   Responsive | GSAP-ready | No Cropped Faces
+===================================== */
 
-/* =========================
-   DETAILS PAGE BASE STYLING
-========================= */
+/* ========== BASE ========== */
 body {
   margin: 0;
   padding: 0;
@@ -30,26 +27,24 @@ h1, h2, h3 {
   letter-spacing: 0.5px;
 }
 
+/* ========== PAGE WRAPPER ========== */
 .details-page {
   min-height: 100vh;
   color: #f3e9ef;
   background: radial-gradient(circle at top left, #151515 0%, #000 60%);
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   padding-bottom: 6rem;
 }
 
+/* ========== CONTAINER ========== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.25rem;
 }
 
-/* =========================
-   DETAILS HERO (poster + meta)
-========================= */
+/* ========== HERO (Poster + Info) ========== */
 .details-hero {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -60,9 +55,6 @@ h1, h2, h3 {
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  position: relative;
-  overflow: visible;
-  will-change: transform, opacity;
   transition: transform 0.45s cubic-bezier(.2,.9,.2,1), box-shadow 0.35s;
 }
 
@@ -82,7 +74,6 @@ h1, h2, h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   border-radius: 14px;
 }
 
@@ -95,7 +86,6 @@ h1, h2, h3 {
   font-size: 2.1rem;
   margin: 0 0 0.5rem 0;
   color: #fff;
-  letter-spacing: -0.5px;
 }
 
 .details-meta {
@@ -141,77 +131,89 @@ h1, h2, h3 {
   border-color: rgba(255,255,255,0.12);
 }
 
-/* =========================
-   CAST SECTION — circular scroll carousel
-========================= */
+/* ========== CAST SECTION ========== */
 .cast-section {
-  margin: 1.5rem 0;
-  padding: 0.5rem;
-  height: 180px; /* reduced height */
-  perspective: 800px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-  will-change: transform, opacity;
-  transition: transform 0.4s ease;
+  margin: 4rem auto;
+  width: 90%;
+  max-width: 1200px;
+  background: rgba(255, 192, 203, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 0 25px rgba(255, 0, 85, 0.2);
+  border: 1px solid rgba(255, 192, 203, 0.25);
+  transition: all 0.3s ease-in-out;
 }
 
 .cast-section h2 {
-  margin: 0.8rem 0;
-  font-size: 1.25rem;
-  color: #fff;
+  font-size: 2rem;
   font-weight: 700;
-}
-
-/* carousel wrapper */
-.cast-carousel {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-/* cast cards */
-.cast-card {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  width: 100px;
-  height: 140px;
-  margin: -70px 0 0 -50px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.02);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+  color: #ffb6c1;
   text-align: center;
+}
+
+/* Grid Layout — Automatically adapts to screen width */
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+
+.cast-card {
+  width: 100%;       /* fill the grid cell */
+  max-width: 220px;  /* optional limit */
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.cast-card img {
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-  display: block;
-  margin-bottom: 0.3rem;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-}
-
-.cast-card p {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cast-card:hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 10px 30px rgba(255,79,138,0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px rgba(255, 0, 100, 0.3);
 }
 
-/* =========================
-   RELATED SECTION
-========================= */
+/.cast-card img {
+  width: 749px;        /* fill card width */
+  height: auto;       /* keep aspect ratio */
+  max-height: 400px;  
+  object-fit: contain; /* ensures full image is visible */
+  border-bottom: 2px solid rgba(255, 192, 203, 0.3);
+  border-radius: 12px 12px 0 0;
+  display: block;
+}
+/* Cast Names */
+.cast-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.25rem 0 0.1rem;
+}
+
+.cast-card p {
+  font-size: 0.9rem;
+  color: #ffb6c1;
+  opacity: 0.8;
+}
+
+/* Responsive tweak for big screens */
+@media (min-width: 1024px) {
+  .cast-grid {
+    gap: 2rem;
+  }
+}
+
+/* ========== RELATED SECTION ========== */
 .related-section {
   margin: 1.5rem 0;
   padding: 1rem;
@@ -282,66 +284,29 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
-/* =========================
-   MEDIA QUERIES
-========================= */
+/* ========== MEDIA QUERIES ========== */
 @media (max-width: 1024px) {
   .details-hero { grid-template-columns: 300px 1fr; }
   .details-poster { min-height: 420px; }
   .related-grid { grid-template-columns: repeat(2, 1fr); }
-  .related-grid .featured { grid-column: 1 / span 2; grid-row: 1 / span 1; }
+  .related-grid .featured { grid-column: 1 / span 2; grid-row: auto; }
 }
 
 @media (max-width: 768px) {
-  .container { padding: 0.75rem; }
   .details-hero {
     grid-template-columns: 1fr;
     gap: 0.8rem;
     padding: 0.8rem;
   }
-  .details-poster { min-height: 420px; }
   .details-info h1 { font-size: 1.6rem; }
-  .cast-card {
-    width: 80px;
-    height: 110px;
-    margin: -55px 0 0 -40px;
-  }
-  .cast-card img { height: 80px; }
   .related-grid { grid-template-columns: 1fr; }
-  .related-grid .featured { grid-column: auto; grid-row: auto; }
 }
 
-/* =========================
-   BOUNCE OVERSCROLL
-========================= */
+/* ========== UTILITY ========== */
 html, body {
   overscroll-behavior-y: contain;
 }
 
-.top-bounce, .bottom-bounce {
-  position: fixed;
-  left: 0;
-  right: 0;
-  height: 24px;
-  pointer-events: none;
-  z-index: 60;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.top-bounce {
-  top: 0;
-  background: linear-gradient(180deg, rgba(255,79,138,0.12), transparent);
-}
-
-.bottom-bounce {
-  bottom: 0;
-  background: linear-gradient(0deg, rgba(255,79,138,0.12), transparent);
-}
-
-/* =========================
-   UTILITY
-========================= */
 .zoom-ready {
   will-change: transform, opacity;
   transform-origin: center center;

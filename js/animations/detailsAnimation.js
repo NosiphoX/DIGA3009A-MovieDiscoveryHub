@@ -2,7 +2,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 export function initDetailsAnimations() {
-  // Fade + Zoom effect for each section
+  // === 1️⃣ Fade + Zoom effect for each section ===
   gsap.utils.toArray("section").forEach((section) => {
     gsap.fromTo(
       section,
@@ -23,10 +23,25 @@ export function initDetailsAnimations() {
     );
   });
 
-  // Smooth bounce at top & bottom (visual illusion)
-  const scrollContainer = document.scrollingElement;
+  // === 2️⃣ Cast grid fade-in animation ===
+  gsap.from(".cast-grid .cast-card", {
+    opacity: 0,
+    y: 40,
+    scale: 0.95,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".cast-grid",
+      start: "top 85%",
+      toggleActions: "play none none reverse",
+    },
+  });
 
+  // === 3️⃣ Smooth bounce at top & bottom (visual illusion) ===
+  const scrollContainer = document.scrollingElement;
   let lastScroll = 0;
+
   window.addEventListener("scroll", () => {
     const current = scrollContainer.scrollTop;
     const maxScroll = scrollContainer.scrollHeight - window.innerHeight;
