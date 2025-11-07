@@ -1,25 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movie Discovery Hub</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Discovery Hub | Browse</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="./css/header-footer.css">
-  
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+  <link rel="stylesheet" href="./css/header-footer.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/browse.css" />
 
-  <!-- JS (with defer) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" defer></script>
+
   <script type="module" src="./js/main.js" defer></script>
+  <script type="module" src="./js/api/tmdb.js" defer></script>
+  <script type="module" src="./js/pages/browse.js" defer></script>
+  <script type="module" src="./js/animations/browseAnimations.js" defer></script>
+
 </head>
-
 <body>
-  <div id="header"></div>
+  <header id="header"></header>
 
-  <main>
-    <h1>Welcome to Movie Discovery Hub 🎬</h1>
+  <main id="main" class="browse-page">
+    <section class="browse-controls" aria-label="Search and filters">
+      <div class="search-wrap">
+        <label for="searchInput" class="sr-only">Search movies</label>
+        <input id="searchInput" type="search" placeholder="Search movies by title..." aria-label="Search movies" />
+        <div id="searchStatus" role="status" aria-live="polite" class="visually-hidden"></div>
+      </div>
+
+      <div class="filters">
+        <select id="genreSelect" aria-label="Filter by genre">
+          <option value="">All genres</option>
+        </select>
+
+        <select id="yearSelect" aria-label="Filter by year">
+          <option value="">All years</option>
+          <!-- fill with JS -->
+        </select>
+
+        <select id="sortSelect" aria-label="Sort by">
+          <option value="popularity.desc">Most popular</option>
+          <option value="release_date.desc">Newest</option>
+          <option value="vote_average.desc">Top rated</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="movie-grid-wrap" aria-live="polite" aria-busy="false">
+      <div id="movieGrid" class="movie-grid"></div>
+
+      <div id="loadingMore" class="loading-more visually-hidden">Loading more...</div>
+      <div id="errorState" role="alert" class="error visually-hidden"></div>
+
+      <button id="loadMoreBtn" class="btn load-more">Load more</button>
+    </section>
   </main>
 
-  <div id="footer"></div>
+  <footer id="footer"></footer>
 </body>
 </html>
