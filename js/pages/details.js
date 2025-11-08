@@ -1,4 +1,3 @@
-// js/pages/details.js
 import {
   fetchMovieDetails,
   fetchMovieCredits,
@@ -7,28 +6,32 @@ import {
 
 import { initDetailsAnimations } from "../animations/detailsAnimation.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // ===== 1️⃣ Extract movie ID from URL =====
+// ====== MAIN LOADER ======
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const movieId = params.get("id") || 603692; // fallback: John Wick: Chapter 4
-
-  // ===== 2️⃣ Load details + cast + related movies =====
-  const [details, credits, similar] = await Promise.all([
-    fetchMovieDetails(movieId),
-    fetchMovieCredits(movieId),
-    fetchSimilarMovies(movieId),
-  ]);
-
-  renderMovieDetails(details);
-  renderCast(credits.cast);
-  renderRelatedMovies(similar);
-
-  // ===== 3️⃣ Start animations =====
-  initDetailsAnimations();
+  loadMovieData(movieId);
 });
 
-// ======  SECTION RENDERERS  ======
+// ====== CORE DATA LOADER ======
+async function loadMovieData(movieId) {
+  try {
+    const [details, credits, similar] = await Promise.all([
+      fetchMovieDetails(movieId),
+      fetchMovieCredits(movieId),
+      fetchSimilarMovies(movieId),
+    ]);
 
+    renderMovieDetails(details);
+    renderCast(credits.cast);
+    renderRelatedMovies(similar);
+    initDetailsAnimations();
+  } catch (err) {
+    console.error("Error loading movie data:", err);
+  }
+}
+
+// ====== SECTION RENDERERS ======
 function renderMovieDetails(movie) {
   const container = document.querySelector(".movie-details");
   if (!container) return;
@@ -38,7 +41,7 @@ function renderMovieDetails(movie) {
     : "assets/placeholder-poster.png";
 
   container.innerHTML = `
-    <div class="details-hero">
+    <div class="details-hero zoom-glow">
       <div class="details-poster">
         <img src="${poster}" alt="${movie.title}" />
       </div>
@@ -51,11 +54,17 @@ function renderMovieDetails(movie) {
         <p class="extra">
           Release: ${movie.release_date || "N/A"} | Runtime: ${movie.runtime || "N/A"} min
         </p>
+        <button class="save-btn" data-id="${movie.id}">${isFavourite(movie.id) ? "💖 Saved" : "💖 Save to Favourites"}</button>
       </div>
     </div>
   `;
+
+  // ========== FAVOURITE BUTTON HANDLER ==========
+  const saveBtn = container.querySelector(".save-btn");
+  saveBtn.addEventListener("click", () => toggleFavourite(movie, saveBtn));
 }
 
+// ====== CAST SECTION ======
 function renderCast(cast) {
   const container = document.querySelector(".cast-section");
   if (!container) return;
@@ -83,6 +92,7 @@ function renderCast(cast) {
   `;
 }
 
+// ====== RELATED MOVIES ======
 function renderRelatedMovies(movies) {
   const container = document.querySelector(".related-section");
   if (!container) return;
@@ -95,7 +105,7 @@ function renderRelatedMovies(movies) {
         : "assets/placeholder-poster.png";
 
       return `
-        <div class="card">
+        <div class="card" data-id="${movie.id}">
           <img src="${poster}" alt="${movie.title}">
           <div class="card-title">
             <h4>${movie.title}</h4>
@@ -110,4 +120,45 @@ function renderRelatedMovies(movies) {
     <h2>Related Movies</h2>
     <div class="related-grid">${relatedHTML}</div>
   `;
+
+  // ========== CLICK TO LOAD MOVIE DETAILS ==========
+  container.querySelectorAll(".card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const newId = card.dataset.id;
+      window.history.pushState({}, "", `?id=${newId}`);
+      loadMovieData(newId);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+}
+
+// ====== FAVOURITES SYSTEM ======
+function isFavourite(movieId) {
+  const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+  return favourites.some(fav => fav.id === movieId);
+}
+
+function toggleFavourite(movie, btn) {
+  let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+  const index = favourites.findIndex(fav => fav.id === movie.id);
+
+  if (index === -1) {
+    favourites.push({
+      id: movie.id,
+      title: movie.title,
+      poster_path: movie.poster_path,
+      release_date: movie.release_date,
+      vote_average: movie.vote_average,
+    });
+    localStorage.setItem("favourites", JSON.stringify(favourites));
+    btn.textContent = "💖 Saved";
+    btn.classList.add("saved");
+    alert(`${movie.title} added to Favourites 💖`);
+  } else {
+    favourites.splice(index, 1);
+    localStorage.setItem("favourites", JSON.stringify(favourites));
+    btn.textContent = "💖 Save to Favourites";
+    btn.classList.remove("saved");
+    alert(`${movie.title} removed from Favourites`);
+  }
 }
