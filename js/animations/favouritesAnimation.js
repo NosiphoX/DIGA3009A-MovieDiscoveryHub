@@ -1,6 +1,7 @@
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export function initFavouritesAnimations() {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
   const cards = document.querySelectorAll(".movie-card");
 
   if (cards.length > 0) {
@@ -33,31 +34,33 @@ export function initFavouritesAnimations() {
       img.addEventListener("mouseleave", () => gsap.to(img, { scale: 1, duration: 0.3 }));
     });
   } else {
-    // Animate the empty reel
-    const reel = document.querySelector("#emptyReel");
-    if (reel) {
-      gsap.fromTo(
-        reel.children,
-        { y: 0, opacity: 0.5 },
-        {
-          y: -10,
-          opacity: 1,
-          stagger: 0.2,
-          repeat: -1,
-          yoyo: true,
-          duration: 0.8,
-          ease: "power1.inOut",
-        }
-      );
+   // SVG MotionPath animation (Film Reel)
+const reelDot = document.querySelector("#reelDot");
+const reelPath = document.querySelector("#reelPath");
+
+if (reelDot && reelPath) {
+  gsap.to(reelDot, {
+    duration: 10,
+    repeat: 3,
+    yoyo: true,
+    ease: "power1.inOut",
+    motionPath: {
+      path: reelPath,
+      align: reelPath,
+      autoRotate: true,
+      alignOrigin: [0.5, 0.5],
+    },
+  });
+}
 
       // Horizontal floating motion
       gsap.to(reel, {
         x: 20,
         repeat: -1,
         yoyo: true,
-        duration: 3,
+        duration: 10,
         ease: "sine.inOut",
       });
     }
   }
-}
+

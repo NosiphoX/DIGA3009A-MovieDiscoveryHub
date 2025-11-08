@@ -1,4 +1,5 @@
 import { initContactAnimations } from "../animations/contactAnimations.js";
+import gsap from "gsap";
 
 document.addEventListener("DOMContentLoaded", () => {
   initContactAnimations();
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Reset error states
+    // Reset all errors
     hideError(nameInput);
     hideError(emailInput);
     hideError(messageInput);
@@ -35,10 +36,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (valid) {
-      // For demo, just show confirmation message
+      // Animate success message
       formSuccess.classList.remove("visually-hidden");
+      gsap.fromTo(
+        formSuccess,
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      );
+
       form.reset();
-      setTimeout(() => formSuccess.classList.add("visually-hidden"), 5000);
+
+      // Hide success message after 5 seconds with animation
+      setTimeout(() => {
+        gsap.to(formSuccess, {
+          opacity: 0,
+          y: -20,
+          duration: 0.4,
+          ease: "power2.in",
+          onComplete: () => formSuccess.classList.add("visually-hidden"),
+        });
+      }, 5000);
     }
   });
 });
@@ -49,13 +66,35 @@ document.addEventListener("DOMContentLoaded", () => {
 function showError(input, msg) {
   const error = input.nextElementSibling;
   error.textContent = msg;
-  error.classList.remove("visually-hidden");
+
+  // Animate error message in
+  gsap.to(error, { 
+    opacity: 1, 
+    y: 0, 
+    height: "auto", 
+    duration: 0.4, 
+    ease: "power2.out" 
+  });
+
+  // Animate input border
+  gsap.to(input, { borderColor: "#ff4f8a", duration: 0.3 });
   input.classList.add("input-error");
 }
 
 function hideError(input) {
   const error = input.nextElementSibling;
-  error.classList.add("visually-hidden");
+
+  // Animate error message out
+  gsap.to(error, {
+    opacity: 0,
+    y: -10,
+    height: 0,
+    duration: 0.3,
+    ease: "power2.in"
+  });
+
+  // Reset input border
+  gsap.to(input, { borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
   input.classList.remove("input-error");
 }
 

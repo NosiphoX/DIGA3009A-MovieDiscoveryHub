@@ -35,6 +35,52 @@ export function initContactAnimations() {
   createParticles();
 }
 
+
+
+
+function showError(input, msg) {
+  const error = input.nextElementSibling;
+  error.textContent = msg;
+
+  // Animate in
+  gsap.to(error, { 
+    opacity: 1, 
+    y: 0, 
+    height: "auto", 
+    duration: 0.4, 
+    ease: "power2.out" 
+  });
+
+  // Animate input border
+  gsap.to(input, { borderColor: "#ff4f8a", duration: 0.3 });
+  input.classList.add("input-error");
+}
+
+function hideError(input) {
+  const error = input.nextElementSibling;
+
+  gsap.to(error, {
+    opacity: 0,
+    y: -10,
+    height: 0,
+    duration: 0.3,
+    ease: "power2.in"
+  });
+
+  // Reset input border
+  gsap.to(input, { borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
+  input.classList.remove("input-error");
+}
+
+
+
+
+
+
+
+
+
+
 /* ============================
    PARTICLE BACKGROUND
 ============================ */
@@ -64,6 +110,18 @@ function animateParticle(particle) {
   const duration = Math.random() * 15 + 10; // 10-25s
   const xMove = (Math.random() - 0.5) * 200; // drift left/right
   const yMove = -window.innerHeight - 50; // move upward
+
+gsap.to(btn, {
+    boxShadow: "0 0 12px rgba(255,79,138,0.7)",
+    textShadow: "0 0 8px rgba(255,79,138,0.7)",
+    duration: 1.2 + Math.random(), // slight random timing
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    delay: i * 0.2 // stagger flickers slightly
+  });
+
+
 
   gsap.to(particle, {
     x: xMove,
