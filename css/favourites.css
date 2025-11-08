@@ -53,3 +53,85 @@
     gap: 0.8rem;
   }
 }
+/* ==========================
+   REMOVE BUTTON — Cinematic Style
+========================== */
+.btn-remove {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ff4f8a;
+  border: 1px solid rgba(255,79,138,0.5);
+  padding: 0.55rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.28s ease, transform 0.28s ease, box-shadow 0.28s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+}
+
+.btn-remove:hover {
+  background: linear-gradient(90deg,#d9487f,#ff4f8a);
+  color: #fff;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(255,79,138,0.6);
+}
+
+/* ==========================
+   FAVOURITES GRID — Soft Circular Glow
+========================== */
+.favourites-grid-wrap {
+  position: relative;
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 192, 203, 0.05);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 25px rgba(255, 0, 85, 0.2);
+  border: 1px solid rgba(255, 192, 203, 0.25);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Circular glowing animation */
+.favourites-grid-wrap::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,79,138,0.15), transparent 70%);
+  animation: glowRotate 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes glowRotate {
+  0% {
+    transform: rotate(0deg) translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, 0) rotate(-360deg);
+  }
+}
+/* Show empty message only when grid has no cards */
+.movie-grid:empty::before {
+  content: "You have no saved movies yet.";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff4f8a;
+  font-size: 1.2rem;
+  font-weight: 500;
+  height: 200px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(255, 79, 138, 0.3);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Optional pulse animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

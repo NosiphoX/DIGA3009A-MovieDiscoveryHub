@@ -3,7 +3,7 @@ import {
   fetchMovieCredits,
   fetchSimilarMovies,
 } from "../api/tmdb.js";
-
+import { getFavourites, saveToFavourites } from "../utils/storage.js";
 import { initDetailsAnimations } from "../animations/detailsAnimation.js";
 
 // ====== MAIN LOADER ======
